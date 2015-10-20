@@ -15,4 +15,22 @@ class Role extends Model
     {
         return $this->belongsToMany(Permission::class);
     }
+
+    public function addPermission($permission)
+    {
+        if (is_string($permission)) {
+            $permission = Permission::where('name', $permission)->first();
+        }
+
+        return $this->permissions()->attach($permission);
+    }
+
+    public function removePermission($permission)
+    {
+        if (is_string($permission)) {
+            $permission = Permission::where('name', $permission)->first();
+        }
+
+        return $this->permissions()->detach($permission);
+    }
 }
