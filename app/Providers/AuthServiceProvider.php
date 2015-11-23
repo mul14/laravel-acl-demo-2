@@ -34,7 +34,10 @@ class AuthServiceProvider extends ServiceProvider
 
         foreach($this->getPermissions() as $permission) {
             $gate->define($permission->name, function($user) use ($permission) {
-                return $user->hasRole($permission->roles);
+                foreach ($permission->roles as $role) {
+                    if($user->hasRole($role->name)) return true;
+                }
+                return false;
             });
         }
     }
